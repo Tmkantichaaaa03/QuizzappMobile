@@ -9,35 +9,60 @@ class StartScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
+          // เพิ่มพื้นหลังแบบ Gradient ให้สวยงาม
           gradient: LinearGradient(
-            colors: [Colors.purple, Colors.deepPurple],
+            colors: [Color(0xFF8E44AD), Color(0xFF5E3370)], // สีไล่เฉด
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/images/quiz-logo.png',
-                width: 300,
+              // ใช้ TweenAnimationBuilder เพื่อเพิ่มแอนิเมชันเฟดข้อความตอนโหลด
+              TweenAnimationBuilder(
+                duration: const Duration(seconds: 2), // ระยะเวลา 2 วินาที
+                tween: Tween<double>(begin: 0, end: 1), // จากโปร่งใส -> ปรากฏ
+                builder: (context, value, child) => Opacity(
+                  opacity: value, // เปลี่ยนค่าความโปร่งใส
+                  child: child,
+                ),
+                child: const Text(
+                  'Welcome to Flutter Quiz!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              const SizedBox(height: 30),
-              const Text(
-                'Learn flutter the fun way!',
-                style: TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 30),
-              OutlinedButton(
+              const SizedBox(height: 20), // เพิ่มระยะห่าง
+
+              // ปุ่ม "Start Quiz" ที่มีการตกแต่งใหม่
+              ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const QuestionsScreen(),
-                    ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const QuestionsScreen()),
                   );
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white, // พื้นหลังปุ่มเป็นสีขาว
+                  foregroundColor: Colors.deepPurple, // ข้อความในปุ่มสีม่วง
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15, // ระยะห่างแนวตั้ง
+                    horizontal: 50, // ระยะห่างแนวนอน
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30), // ขอบปุ่มโค้งมน
+                  ),
+                  elevation: 5, // เพิ่มเงาปุ่ม
+                ),
                 child: const Text(
                   'Start Quiz',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(fontSize: 18), // ขนาดตัวอักษรในปุ่ม
                 ),
               ),
             ],
